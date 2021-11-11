@@ -1,59 +1,42 @@
 defmodule TxConfirm.TxInfo do
-  @token "YWTUP37V8FIJA7KN27H9TBESY7HJTUUAH9"
-  @etherscan_base "https://api.etherscan.io/api"
-
   alias TxConfirm.Requests
 
-  def info(tx_hash) do
-    # tx_hash |> get_tx_details
-    get_most_recent_block()
+  def depth_info(tx_hash) do
+    maybe_last_block = Requests.get_most_recent_block() |> parse_response |> result_value
+    maybe_tx = tx_hash |> Requests.get_tx_details |> parse_response |> result_value
+    res = compare_blocks(maybe_last_block, maybe_tx)
+    require IEx; IEx.pry
   end
 
-  def get_most_recent_block do
-    case HTTPoison.get(most_recent_block()) do
-      {:ok, response} -> parse_block_response(response)
-      _ -> {:error, "Failed to fetch block details"}
-    end
+  def compare_blocks({:error, msg}, res) do
+    {:error, msg}
+  end
+  def compare_blocks(res, {:error, msg}) do
+    {:error, msg}
+  end
+  def compare_blocks({:ok, last_block}, {:ok, tx}) do
+    block_num_decimal(last_block) - block_num_decimal(tx["blockNumber"])
   end
 
-  def parse_block_response(response) do
-    case response.body |> Jason.decode do
-      {:ok, json} -> result_value(json)
-      _ -> {:error, "Failed to get the block details."}
-    end
+  def parse_response({:ok, response}) do
+    response.body |> Jason.decode
+  end
+  def parse_response(_) do
+    {:error, "Failed to parse response from Etherscan API."}
   end
 
-  def get_tx_details(tx_hash) do
-    case HTTPoison.get(tx_by_hash(tx_hash)) do
-      {:ok, response } -> parse_tx_details_response(response)
-      _ -> {:error, "Failed to get the transaction details"}
-     end
-  end
-
-  def parse_tx_details_response(response) do
-    case response.body |> Jason.decode do
-      {:ok, json } -> result_value(json)
-      _ -> {:error, "Failed to parse transaction details response" }
-    end
-  end
-
-  def result_value(json) do
+  def result_value({:ok, json}) do
     if json |> Map.has_key?("result") do
       {:ok, json["result"]}
     else
       {:error, "Etherscan api failed to process the data request"}
     end
   end
+  def result_value(error) do
+    error
+  end
 
   def block_num_decimal(block_hex) do
     block_hex |> String.slice(2..-1) |> Integer.parse(16) |> elem(0)
-  end
-
-  def tx_by_hash(tx_hash) do
-    "#{@etherscan_base}?module=proxy&action=eth_getTransactionByHash&txhash=#{tx_hash}&apikey=#{@token}"
-  end
-
-  def most_recent_block do
-    "#{@etherscan_base}?module=proxy&action=eth_blockNumber&apikey=#{@token}"
   end
 end
