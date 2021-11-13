@@ -4,6 +4,9 @@ config :tx_confirm,
   etherscan_api_key: "TestApiToken",
   requests_client: TxConfirm.RequestsMock
 
+config :tx_confirm_web,
+  block_depth: TxConfirmWeb.BlockDepthMock
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used

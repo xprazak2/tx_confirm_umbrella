@@ -17,7 +17,10 @@ defmodule TxConfirmWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    get "/*path", PageController, :index
+
+    if Mix.env() in [:prod] do
+      get "/*path", PageController, :index
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -44,6 +47,7 @@ defmodule TxConfirmWeb.Router do
     scope "/" do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: TxConfirmWeb.Telemetry
+      get "/*path", PageController, :index
     end
   end
 end

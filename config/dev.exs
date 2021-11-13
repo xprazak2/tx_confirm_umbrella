@@ -4,6 +4,9 @@ config :tx_confirm,
   etherscan_api_key: System.get_env("ETHERSCAN_API_KEY") || "YourApiKeyToken",
   requests_client: TxConfirm.Requests
 
+config :tx_confirm_web,
+  block_depth: TxConfirmWeb.BlockDepth
+
 # Configure your database
 config :tx_confirm, TxConfirm.Repo,
   username: "postgres",
