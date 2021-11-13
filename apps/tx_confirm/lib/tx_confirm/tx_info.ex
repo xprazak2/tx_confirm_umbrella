@@ -22,7 +22,7 @@ defmodule TxConfirm.TxInfo do
   end
 
   def compare_blocks(last_block, tx) do
-    {:ok, block_num_decimal(last_block) - block_num_decimal(tx["blockNumber"]) }
+    {:ok, block_num_decimal(last_block) - block_num_decimal(tx["blockNumber"]) + 1 }
   end
 
   def parse_response({:ok, response}) do

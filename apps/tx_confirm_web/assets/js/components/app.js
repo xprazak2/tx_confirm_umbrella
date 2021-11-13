@@ -8,9 +8,8 @@ const App = props => {
   return (
     <Router>
       <Routes>
-          <Route path="/" element={<NewTransaction />}>
+          <Route path="/" element={<NewTransaction />} exact/>
           <Route path="*" element={<NotFound />} />
-        </Route>
       </Routes>
     </Router>
   )
