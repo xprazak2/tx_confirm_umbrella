@@ -47,7 +47,7 @@ defmodule TxConfirmWeb.MixProject do
       {:gettext, "~> 0.11"},
       {:tx_confirm, in_umbrella: true},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
+      {:plug_cowboy, "~> 2.0"}
     ]
   end
 

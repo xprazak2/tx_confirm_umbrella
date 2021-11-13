@@ -11,7 +11,9 @@ defmodule TxConfirm.Requests do
   end
 
   def tx_by_hash(tx_hash) do
-    "#{@etherscan_base}?module=proxy&action=eth_getTransactionByHash&txhash=#{tx_hash}&apikey=#{token()}"
+    "#{@etherscan_base}?module=proxy&action=eth_getTransactionByHash&txhash=#{tx_hash}&apikey=#{
+      token()
+    }"
   end
 
   def get_most_recent_block do
@@ -23,7 +25,7 @@ defmodule TxConfirm.Requests do
 
   def get_tx_details(tx_hash) do
     case HTTPoison.get(tx_by_hash(tx_hash)) do
-      {:ok, response } -> {:ok, response}
+      {:ok, response} -> {:ok, response}
       _ -> {:error, "Failed to get the transaction details"}
     end
   end

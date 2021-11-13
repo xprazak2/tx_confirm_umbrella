@@ -1,10 +1,7 @@
 defmodule TxConfirm.TxInfo do
-  alias TxConfirm.Requests
-
   def depth_info(tx_hash) do
     with {:ok, last_block} <- last_block_num(),
-         {:ok, tx} <- transaction(tx_hash)
-    do
+         {:ok, tx} <- transaction(tx_hash) do
       compare_blocks(last_block, tx)
     end
   end
@@ -22,13 +19,14 @@ defmodule TxConfirm.TxInfo do
   end
 
   def compare_blocks(last_block, tx) do
-    {:ok, block_num_decimal(last_block) - block_num_decimal(tx["blockNumber"]) + 1 }
+    {:ok, block_num_decimal(last_block) - block_num_decimal(tx["blockNumber"]) + 1}
   end
 
   def parse_response({:ok, response}) do
-    response.body |> Jason.decode
+    response.body |> Jason.decode()
   end
-  def parse_response(err) do
+
+  def parse_response(_) do
     {:error, "Failed to parse response from Etherscan API."}
   end
 
@@ -36,12 +34,15 @@ defmodule TxConfirm.TxInfo do
     cond do
       json |> Map.has_key?("message") && json["message"] == "NOTOK" ->
         {:error, json["result"] |> etherscan_error}
+
       json |> Map.has_key?("error") ->
-        {:error, json["error"]["message"] |> etherscan_error }
+        {:error, json["error"]["message"] |> etherscan_error}
+
       true ->
         {:ok, json["result"]}
     end
   end
+
   def result_value(error) do
     error
   end
