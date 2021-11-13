@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 import TxResult from '../../components/TxResult';
+import { checkTransaction } from '../../requests'
 
 const NewTransaction = props => {
   const [txHash, setTxHash] = useState("");
@@ -17,28 +17,26 @@ const NewTransaction = props => {
     setResponse(null);
 
     const onSuccess = response => {
-      console.log(response)
       setLoading(false)
       setResponse(response.data)
     }
 
     const onError = response => {
-      console.log(response)
       setLoading(false)
     }
 
     setLoading(true)
-    axios.post('api/v1/transactions/check', { params: { 'tx_hash': txHash }}).then(onSuccess).catch(onError)
+    checkTransaction(txHash).then(onSuccess).catch(onError)
   }
 
   return (
     <React.Fragment>
     <form>
-      <label>
+      <label htmlFor="txHash">
         Transaction hash
-        <input type="text" name="tx_hash" onChange={onInputChange} disabled={loading} />
       </label>
-        <input type="submit" value="Submit" onClick={handleSubmit} disabled={loading} />
+      <input type="text" id="txHash" name="txHash" onChange={onInputChange} disabled={loading} />
+      <input type="submit" value="Submit" onClick={handleSubmit} disabled={loading} />
     </form>
 
     <TxResult response={response} />
