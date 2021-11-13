@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import TxResult from '../../components/TxResult';
+
 const NewTransaction = props => {
   const [txHash, setTxHash] = useState("");
   const [loading, setLoading] = useState(false)
+  const [response, setResponse] = useState(null)
 
   const onInputChange = event => {
-    setTxHash(event.target.value)
+    setTxHash(event.target.value);
   }
 
   const handleSubmit = event => {
-    event.preventDefault()
+    event.preventDefault();
+    setResponse(null);
 
     const onSuccess = response => {
       console.log(response)
       setLoading(false)
+      setResponse(response.data)
     }
 
     const onError = response => {
@@ -27,6 +32,7 @@ const NewTransaction = props => {
   }
 
   return (
+    <React.Fragment>
     <form>
       <label>
         Transaction hash
@@ -34,6 +40,9 @@ const NewTransaction = props => {
       </label>
         <input type="submit" value="Submit" onClick={handleSubmit} disabled={loading} />
     </form>
+
+    <TxResult response={response} />
+    </React.Fragment>
   )
 }
 

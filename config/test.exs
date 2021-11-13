@@ -1,5 +1,8 @@
 use Mix.Config
 
+config :tx_confirm,
+  etherscan_api_key: "TestApiToken"
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used

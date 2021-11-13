@@ -1,13 +1,16 @@
 defmodule TxConfirm.Requests do
-  @token "YWTUP37V8FIJA7KN27H9TBESY7HJTUUAH9"
   @etherscan_base "https://api.etherscan.io/api"
 
+  def token do
+    Application.get_env(:tx_confirm, :etherscan_api_key)
+  end
+
   def most_recent_block do
-    "#{@etherscan_base}?module=proxy&action=eth_blockNumber&apikey=#{@token}"
+    "#{@etherscan_base}?module=proxy&action=eth_blockNumber&apikey=#{token()}"
   end
 
   def tx_by_hash(tx_hash) do
-    "#{@etherscan_base}?module=proxy&action=eth_getTransactionByHash&txhash=#{tx_hash}&apikey=#{@token}"
+    "#{@etherscan_base}?module=proxy&action=eth_getTransactionByHash&txhash=#{tx_hash}&apikey=#{token()}"
   end
 
   def get_most_recent_block do

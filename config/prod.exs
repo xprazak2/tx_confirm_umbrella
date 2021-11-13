@@ -1,5 +1,8 @@
 use Mix.Config
 
+config :tx_confirm,
+  etherscan_api_key: System.get_env("ETHERSCAN_API_KEY") || "YourApiKeyToken"
+
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
