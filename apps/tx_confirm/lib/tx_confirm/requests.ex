@@ -1,4 +1,5 @@
 defmodule TxConfirm.Requests do
+  @behaviour TxConfirm.RequestsBehaviour
   @etherscan_base "https://api.etherscan.io/api"
 
   def token do

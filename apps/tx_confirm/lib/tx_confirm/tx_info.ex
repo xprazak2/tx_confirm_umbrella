@@ -9,12 +9,16 @@ defmodule TxConfirm.TxInfo do
     end
   end
 
+  def requests_client() do
+    Application.get_env(:tx_confirm, :requests_client)
+  end
+
   def last_block_num() do
-    Requests.get_most_recent_block() |> parse_response |> result_value
+    requests_client().get_most_recent_block() |> parse_response |> result_value
   end
 
   def transaction(tx_hash) do
-    tx_hash |> Requests.get_tx_details |> parse_response |> result_value
+    tx_hash |> requests_client().get_tx_details |> parse_response |> result_value
   end
 
   def compare_blocks(last_block, tx) do

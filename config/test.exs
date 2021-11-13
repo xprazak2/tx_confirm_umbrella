@@ -1,7 +1,8 @@
 use Mix.Config
 
 config :tx_confirm,
-  etherscan_api_key: "TestApiToken"
+  etherscan_api_key: "TestApiToken",
+  requests_client: TxConfirm.RequestsMock
 
 # Configure your database
 #

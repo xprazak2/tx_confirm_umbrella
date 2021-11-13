@@ -1,7 +1,8 @@
 use Mix.Config
 
 config :tx_confirm,
-  etherscan_api_key: System.get_env("ETHERSCAN_API_KEY") || "YourApiKeyToken"
+  etherscan_api_key: System.get_env("ETHERSCAN_API_KEY") || "YourApiKeyToken",
+  requests_client: TxConfirm.Requests
 
 # Configure your database
 config :tx_confirm, TxConfirm.Repo,

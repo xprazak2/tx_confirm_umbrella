@@ -41,6 +41,7 @@ defmodule TxConfirm.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.0"},
       {:httpoison, "~> 1.8"},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 
